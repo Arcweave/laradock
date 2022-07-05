@@ -146,6 +146,7 @@ services:
           - INSTALL_MAILPARSE=${WORKSPACE_INSTALL_MAILPARSE}
           - INSTALL_GIT_PROMPT=${WORKSPACE_INSTALL_GIT_PROMPT}
           - INSTALL_XMLRPC=${WORKSPACE_INSTALL_XMLRPC}
+          - INSTALL_CHROMIUM=${WORKSPACE_INSTALL_CHROMIUM}
           - PUID=${WORKSPACE_PUID}
           - PGID=${WORKSPACE_PGID}
           - CHROME_DRIVER_VERSION=${WORKSPACE_CHROME_DRIVER_VERSION}
@@ -196,6 +197,12 @@ services:
         - DOCKER_TLS_CERTDIR=/certs
         - DOCKER_CERT_PATH=/certs/client
         - CHOKIDAR_USEPOLLING=true
+        - WORKSPACE_BROWSERSYNC_PROXY_TARGET=${WORKSPACE_BROWSERSYNC_PROXY_TARGET}
+        - WORKSPACE_BROWSERSYNC_KEY_PATH=${WORKSPACE_BROWSERSYNC_KEY_PATH}
+        - WORKSPACE_BROWSERSYNC_CRT_PATH=${WORKSPACE_BROWSERSYNC_CRT_PATH}
+        - DB_HOST=${PROJECT_DB_HOST}
+        - REDIS_HOST=${PROJECT_REDIS_HOST}
+        - APP_URL=${PROJECT_APP_URL}
       networks:
         - frontend
         - backend
@@ -303,6 +310,9 @@ services:
         - DOCKER_TLS_CERTDIR=/certs
         - DOCKER_CERT_PATH=/certs/client
         - FAKETIME=${PHP_FPM_FAKETIME}
+        - DB_HOST=${PROJECT_DB_HOST}
+        - REDIS_HOST=${PROJECT_REDIS_HOST}
+        - APP_URL=${PROJECT_APP_URL}
       depends_on:
         - workspace
       networks:
@@ -723,7 +733,7 @@ services:
       build: ./redis
       volumes:
         - ${DATA_PATH_HOST}/redis:/data
-      command: --requirepass ${REDIS_PASSWORD}
+      # command: --requirepass ${REDIS_PASSWORD}
       ports:
         - "${REDIS_PORT}:6379"
       networks:
@@ -1247,7 +1257,8 @@ services:
 ### Laravel Echo Server #######################################
     laravel-echo-server:
       build:
-        context: ./laravel-echo-server
+        context: ./
+        dockerfile: ./laravel-echo-server/Dockerfile
         args:
           - CHANGE_SOURCE=${CHANGE_SOURCE}
       volumes:
