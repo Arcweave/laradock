@@ -750,6 +750,7 @@ services:
     redis:
       build: ./redis
       volumes:
+        - ${APP_CODE_PATH_HOST}/redis-functions:/data
         - ${DATA_PATH_HOST}/redis:/data
       # command: --requirepass ${REDIS_PASSWORD}
       ports:
