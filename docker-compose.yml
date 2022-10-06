@@ -750,7 +750,7 @@ services:
     redis:
       build: ./redis
       volumes:
-        - ${APP_CODE_PATH_HOST}/redis-functions:/data
+        - ${APP_CODE_PATH_HOST}/redis-functions:/redis-functions${APP_CODE_CONTAINER_FLAG}
         - ${DATA_PATH_HOST}/redis:/data
       # command: --requirepass ${REDIS_PASSWORD}
       ports:
@@ -1289,6 +1289,7 @@ services:
       networks:
         - frontend
         - backend
+      restart: unless-stopped
 
 ### Solr ################################################
     solr:
