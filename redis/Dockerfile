@@ -5,7 +5,7 @@ WORKDIR /usr/src/myapp
 RUN apt clean && apt -y update && apt -y install --no-install-recommends \
     clang && rm -rf /var/lib/apt/lists/*
 
-RUN git clone --depth 1 --branch v2.2.0 https://github.com/RedisJSON/RedisJSON.git
+RUN git clone --depth 1 --branch v2.4.0 https://github.com/RedisJSON/RedisJSON.git
 
 WORKDIR /usr/src/myapp/RedisJSON
 
